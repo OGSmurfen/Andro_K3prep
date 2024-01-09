@@ -2,6 +2,7 @@ package com.papasmurfie.test3practise2;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener,
     MyAdapter adapter;
     Handler handler;
     Intent intent;
-
+    private static final int REQUEST_CODE_ACTIVITY_B = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +54,38 @@ public class MainActivity extends AppCompatActivity implements FragmentListener,
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+
+        if (requestCode == REQUEST_CODE_ACTIVITY_B && resultCode == RESULT_OK && data != null) {
+           AvtobusDataModel modifiedObject = (AvtobusDataModel) data.getParcelableExtra("modifiedBus");
+           int pos = data.getIntExtra("posReturn", 0);
+            updateItem(pos, modifiedObject);
+
+        }
+    }
     @Override
     public void updateItem(int position, AvtobusDataModel model) {
         adapter.updateItem(position, model);
     }
 
     @Override
-    public void startA2WithIntent(Intent intent, AvtobusDataModel oneBus) {
+    public void startA2WithIntent(Intent intent, AvtobusDataModel oneBus, int pos) {
         if (intent != null) {
             intent.putExtra("bus", oneBus);
-            startActivity(intent);
+            intent.putExtra("pos", pos);
+            startActivityForResult(intent, REQUEST_CODE_ACTIVITY_B);
         } else {
             // Log an error or handle the case where intent is null
             Log.e("MainActivity", "Intent is null in startA2WithIntent method");
         }
+
+    }
+
+    @Override
+    public void startFragmentForCallback(Intent intent, AvtobusDataModel oneBus, int pos) {
 
     }
 }

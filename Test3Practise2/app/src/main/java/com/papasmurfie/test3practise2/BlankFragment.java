@@ -50,7 +50,8 @@ public class BlankFragment extends DialogFragment {
                         newBus.setNapravlenie(napravleni.getText().toString());
                         newBus.setChasTrugvane(chas.getText().toString());
                         newBus.setStatus(status.getText().toString());
-                        listener.updateItem(bundle.getInt("newNew"), newBus);
+                        listener.updateItem(bundle.getInt("bus"), newBus);
+
                         dismiss();
                     }
                 });

@@ -60,7 +60,7 @@ public class MyAdapter extends RecyclerView.Adapter<RVHolder> {
         });
         holder.itemView.setOnClickListener(view -> {
             //Tuk zaredi aktivity 2 !!
-            mainActivityCallback.startA2WithIntent(intentFromA1.intent, oneBus);
+            mainActivityCallback.startA2WithIntent(intentFromA1.intent, oneBus, position);
         });
     }
 
